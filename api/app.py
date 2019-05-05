@@ -21,6 +21,36 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(180), unique=True)
+    userId = db.Column(db.Integer)
+    description = db.Column(db.String(None))
+
+    def __init__(self, title, userId, description):
+        self.title = title
+        self.userId = userId
+        self.description = description
+
+    def __repr__(self):
+        return '<Project %r>' % self.title
+
+class ProjectItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(180), unique=True)
+    projectId = db.Column(db.Integer)
+    description = db.Column(db.String(None))
+    cost = db.Column(db.Float)
+
+    def __init__(self, title, projectId, description, cost):
+        self.title = title
+        self.projectId = projectId
+        self.description = description
+        self.cost = cost
+
+    def __repr__(self):
+        return '<ProjectItem %r>' % self.title
+
 ma = Marshmallow(app)
 
 class UserSchema(ma.Schema):
