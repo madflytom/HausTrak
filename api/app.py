@@ -60,6 +60,20 @@ class UserSchema(ma.Schema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
+class ProjectItemSchema(ma.Schema):
+    class Meta:
+        fields = ('id','title','projectId', 'description', 'cost')
+
+projectItem_schema = ProjectItemSchema()
+projectItems_schema = ProjectItemSchema(many=True)
+
+class ProjectSchema(ma.Schema):
+    class Meta:
+        fields = ('id','title','userId', 'description')
+
+project_schema = ProjectSchema()
+projects_schema = ProjectSchema(many=True)
+
 @app.route('/')
 def index():
     users = User.query.all()
@@ -76,10 +90,24 @@ def post_user():
     result = user_schema.dump(user)
     return jsonify(result.data)
 
+@app.route('/post_project', methods=['POST'])
+def post_project():
+    project = Project(request.form['title'], request.form['userId'], request.form['description'])
+    db.session.add(project)
+    db.session.commit()
+    result = project_schema.dump(project)
+    return jsonify(result.data)
+
 @app.route('/profile/<username>')
 def profile(username):
     user = User.query.filter_by(username=username).first()
     result = user_schema.dump(user)
+    return jsonify(result.data)
+
+@app.route('/project')
+def projects():
+    projects = Project.query.all()
+    result = projects_schema.dump(projects)
     return jsonify(result.data)
 
 if __name__ == "__main__":
