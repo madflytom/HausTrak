@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask import json
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template, url_for, request, redirect
@@ -7,6 +8,7 @@ from flask import jsonify
 from sqlalchemy.sql import func
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/haustrak'
 db = SQLAlchemy(app)
 

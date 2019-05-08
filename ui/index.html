@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <link href="css/site.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    </head>
+    <body> 
+        <div id="app">
+            <h1>{{title}}:</h1>
+            <ul> 
+            <!-- Remember that todos is the name of our array --> 
+                <li v-for="todo in todos" class="flex"> 
+                    <label>
+                        <input type="checkbox" class="nes-checkbox" v-model="todo.done">
+                        <span>&nbsp</span>
+                    </label> 
+                    <del v-if="todo.done">{{ todo.text }}</del>
+                    <span v-else>{{ todo.text }}</span>
+                    <div class="space"></div>
+                    <button class="nes-btn is-error padding" v-on:click="removeTodo(todo.id)">X</button>
+                </li>
+            </ul>
+            
+            <input type="text" class="nes-input" placeholder="Add todo..." v-on:keyup.enter="addTodo">
+            <div>
+                <h1>Some other stuff</h1>
+                <ul>
+                    <li v-for="project in projects">
+                        {{ project.title }} - {{ project.description }} {{ project.totalTime }} - {{ project.totalCost }}
+                    </li>
+                </ul>
+            </div>
+        </div> 
+
+        
+        <script src="app.js"></script>
+    </body>
+</html>
