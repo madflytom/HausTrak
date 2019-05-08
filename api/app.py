@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import render_template, url_for, request, redirect
 from flask_marshmallow import Marshmallow
 from flask import jsonify
+from sqlalchemy.sql import func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/haustrak'
@@ -26,11 +27,15 @@ class Project(db.Model):
     title = db.Column(db.String(180), unique=True)
     userId = db.Column(db.Integer)
     description = db.Column(db.String(None))
+    totalCost = db.Column(db.Float)
+    totalTime = db.Column(db.Integer)
 
-    def __init__(self, title, userId, description):
+    def __init__(self, title, userId, description, totalCost, totalTime):
         self.title = title
         self.userId = userId
         self.description = description
+        self.totalCost = totalCost
+        self.totalTime = totalTime
 
     def __repr__(self):
         return '<Project %r>' % self.title
@@ -41,12 +46,14 @@ class ProjectItem(db.Model):
     projectId = db.Column(db.Integer)
     description = db.Column(db.String(None))
     cost = db.Column(db.Float)
+    time = db.Column(db.Integer)
 
-    def __init__(self, title, projectId, description, cost):
+    def __init__(self, title, projectId, description, cost, time):
         self.title = title
         self.projectId = projectId
         self.description = description
         self.cost = cost
+        self.time = time
 
     def __repr__(self):
         return '<ProjectItem %r>' % self.title
@@ -62,17 +69,19 @@ users_schema = UserSchema(many=True)
 
 class ProjectItemSchema(ma.Schema):
     class Meta:
-        fields = ('id','title','projectId', 'description', 'cost')
+        fields = ('id','title','projectId', 'description', 'cost', 'time')
 
 projectItem_schema = ProjectItemSchema()
 projectItems_schema = ProjectItemSchema(many=True)
 
 class ProjectSchema(ma.Schema):
     class Meta:
-        fields = ('id','title','userId', 'description')
+        fields = ('id','title','userId', 'description', 'totalCost', 'totalTime')
 
 project_schema = ProjectSchema()
 projects_schema = ProjectSchema(many=True)
+
+""" User Stuff """
 
 @app.route('/')
 def index():
@@ -90,6 +99,20 @@ def post_user():
     result = user_schema.dump(user)
     return jsonify(result.data)
 
+@app.route('/profile/<username>')
+def profile(username):
+    user = User.query.filter_by(username=username).first()
+    result = user_schema.dump(user)
+    return jsonify(result.data)
+
+""" Project Stuff """
+
+@app.route('/project')
+def projects():
+    projects = Project.query.all()
+    result = projects_schema.dump(projects)
+    return jsonify(result.data)
+
 @app.route('/post_project', methods=['POST'])
 def post_project():
     project = Project(request.form['title'], request.form['userId'], request.form['description'])
@@ -98,17 +121,39 @@ def post_project():
     result = project_schema.dump(project)
     return jsonify(result.data)
 
-@app.route('/profile/<username>')
-def profile(username):
-    user = User.query.filter_by(username=username).first()
-    result = user_schema.dump(user)
+@app.route('/project/<projectId>')
+def project(projectId):
+    project = Project.query.filter_by(id=projectId).first()
+
+    cost = db.session.query(func.sum(ProjectItem.cost).label('totalCost')).filter(ProjectItem.projectId==projectId)
+    totalCost = cost.scalar()
+    print(totalCost)
+    project.totalCost = totalCost
+
+    time = db.session.query(func.sum(ProjectItem.time).label('totalTime')).filter(ProjectItem.projectId == projectId)
+    totalTime = time.scalar()
+    print(totalTime)
+    project.totalTime = totalTime
+
+    result = project_schema.dump(project)
     return jsonify(result.data)
 
-@app.route('/project')
-def projects():
-    projects = Project.query.all()
-    result = projects_schema.dump(projects)
+""" Project Item Stuff """
+
+@app.route('/projectItem')
+def projectItems():
+    projectItems = ProjectItem.query.all()
+    result = projectItems_schema.dump(projectItems)
     return jsonify(result.data)
+
+@app.route('/post_projectItem', methods=['POST'])
+def post_projectItem():
+    projectItem = ProjectItem(request.form['title'], request.form['projectId'], request.form['description'], request.form['cost'], request.form['time'])
+    db.session.add(projectItem)
+    db.session.commit()
+    result = projectItem_schema.dump(projectItem)
+    return jsonify(result.data)
+
 
 if __name__ == "__main__":
     app.run()
