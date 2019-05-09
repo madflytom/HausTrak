@@ -4,7 +4,7 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <link href="css/site.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </head>
     <body> 
         <div id="app">
@@ -26,12 +26,20 @@
             <input type="text" class="nes-input" placeholder="Add todo..." v-on:keyup.enter="addTodo">
             <div>
                 <h1>Some other stuff</h1>
-                <ul>
-                    <li v-for="project in projects">
-                        {{ project.title }} - {{ project.description }} {{ project.totalTime }} - {{ project.totalCost }}
-                    </li>
-                </ul>
+                <ul> 
+                        <li v-for="projectItem in projectItems" class="flex"> 
+                            <label>
+                                <input type="checkbox" class="nes-checkbox" v-model="projectItem.done" v-on:click="checkProjectItem(projectItem)">
+                                <span>&nbsp</span>
+                            </label> 
+                            <del v-if="projectItem.done">{{ projectItem.title }}</del>
+                            <span v-else>{{ projectItem.title }}</span>
+                            <div class="space"></div>
+                            <button class="nes-btn is-error padding" v-on:click="deleteProjectItem(projectItem.id)">X</button>
+                        </li>
+                    </ul>
             </div>
+            <input type="text" class="nes-input" placeholder="Add project item..." v-on:keyup.enter="addProjectItem">
         </div> 
 
         

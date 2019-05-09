@@ -8,7 +8,7 @@ from flask import jsonify
 from sqlalchemy.sql import func
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/haustrak'
 db = SQLAlchemy(app)
 
@@ -49,13 +49,15 @@ class ProjectItem(db.Model):
     description = db.Column(db.String(None))
     cost = db.Column(db.Float)
     time = db.Column(db.Integer)
+    done = db.Column(db.Boolean)
 
-    def __init__(self, title, projectId, description, cost, time):
+    def __init__(self, title, projectId, description, cost, time, done):
         self.title = title
         self.projectId = projectId
         self.description = description
         self.cost = cost
         self.time = time
+        self.done = done
 
     def __repr__(self):
         return '<ProjectItem %r>' % self.title
@@ -71,7 +73,7 @@ users_schema = UserSchema(many=True)
 
 class ProjectItemSchema(ma.Schema):
     class Meta:
-        fields = ('id','title','projectId', 'description', 'cost', 'time')
+        fields = ('id','title','projectId', 'description', 'cost', 'time', 'done')
 
 projectItem_schema = ProjectItemSchema()
 projectItems_schema = ProjectItemSchema(many=True)
@@ -150,12 +152,29 @@ def projectItems():
 
 @app.route('/post_projectItem', methods=['POST'])
 def post_projectItem():
-    projectItem = ProjectItem(request.form['title'], request.form['projectId'], request.form['description'], request.form['cost'], request.form['time'])
+    req_data = request.get_json()
+    projectItem = ProjectItem(req_data['title'], req_data['projectId'], req_data['description'], req_data['cost'], req_data['time'], req_data['done'])
     db.session.add(projectItem)
     db.session.commit()
     result = projectItem_schema.dump(projectItem)
     return jsonify(result.data)
 
+@app.route('/check_projectItem/<projectItemId>', methods=['POST'])
+def check_projectItem(projectItemId):
+    projectItem = ProjectItem.query.filter_by(id=projectItemId).first()
+    req_data = request.get_json()
+    done = req_data['done']
+    projectItem.done = done
+    db.session.commit()
+    result = projectItem_schema.dump(projectItem)
+    return jsonify(result.data)
+
+@app.route('/delete_projectItem/<projectItemId>', methods=['DELETE'])
+def delete_projectItem(projectItemId):
+    projectItem = ProjectItem.query.filter_by(id=projectItemId).first()
+    db.session.delete(projectItem)
+    db.session.commit()
+    return '', 204
 
 if __name__ == "__main__":
     app.run()
