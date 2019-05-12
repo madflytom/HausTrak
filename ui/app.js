@@ -13,7 +13,6 @@ Vue.component('project-item-component', {
         deleteProjectItem(id){
             axios.delete("http://localhost:5000/delete_projectItem/" + id).then(response => 
             {
-                //TODO: Tell app.js to remove the item?
                 this.$parent.getProjectItems();
             });
         }
