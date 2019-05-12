@@ -1,13 +1,3 @@
-// Define a new component called button-counter
-Vue.component('button-counter', {
-    data: function () {
-      return {
-        count: 0
-      }
-    },
-    template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
-  })
-
 Vue.component('project-item-component', {
     props: ['projectItem'],
     filters: {},
@@ -81,18 +71,14 @@ const app = new Vue({
         this.getProjectItems();
     },
     template: `
-        <div>
+        <div id="projectCard">
             <div>
                 <h1>Some other stuff</h1>
                 <ul> 
-                    <project-item-component v-for="projectItem in projectItems" v-bind:projectItem="projectItem" />
+                    <project-item-component v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
                 </ul>
             </div>
             <input type="text" class="nes-input" placeholder="Add project item..." v-on:keyup.enter="addProjectItem">
-
-            <div id="components-demo">
-                <button-counter></button-counter>
-            </div>
         </div>
     `
 })
