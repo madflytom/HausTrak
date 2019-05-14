@@ -1,13 +1,18 @@
 <template>
-<div id="projectCard">
-        <div>
-            <h1>{{ project.title }}</h1>
-            <ul> 
-                <ProjectItem v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
-            </ul>
-        </div>
-        <input type="text" class="nes-input" placeholder="Add project item..." v-on:keyup.enter="addProjectItem" />
-    </div>
+    <mdc-card>
+        <mdc-card-primary-action>
+        </mdc-card-primary-action>
+        <mdc-card-header
+            v-bind:title="project.title"
+            subtitle="subtitle here" >
+        </mdc-card-header>
+        <mdc-card-text>
+            <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
+        </mdc-card-text>
+        <mdc-card-actions>
+            <input type="text" placeholder="Add project item..." v-on:keyup.enter="addProjectItem" />
+        </mdc-card-actions>
+    </mdc-card>
 </template>
 
 <script>
@@ -45,7 +50,6 @@ export default {
         getProjectItems(projectId){
             this.$axios.get("http://localhost:5000/projectItem/" + projectId).then(response => {
                 this.projectItems = response.data;
-                console.log(this.projectItems);
             });
         }
   },
@@ -62,25 +66,5 @@ export default {
     border-radius: 4px;
     padding: 20px;
     transition: all 0.2s;
-    }
-
-    li {
-    margin: 8px 0;
-    }
-
-    del {
-    color: rgba(0, 0, 0, 0.3);
-    }
-
-    .padding {
-    padding: 1px 7px 2px;
-    }
-
-    .flex {
-    display: flex;
-    }
-
-    .space {
-    flex-grow: 1;
     }
 </style>

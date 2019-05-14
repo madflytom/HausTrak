@@ -33,7 +33,8 @@ export default {
         deleteProjectItem(id){
             this.$axios.delete("http://localhost:5000/delete_projectItem/" + id).then(() => 
             {
-                this.$parent.getProjectItems(this.projectItem.projectId);
+                //this.$parent.getProjectItems(this.projectItem.projectId);
+                this.$emit('deleted', this.projectItem.projectId)
             });
         }
   }
