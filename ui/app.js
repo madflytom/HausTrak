@@ -13,7 +13,7 @@ Vue.component('project-item-component', {
         deleteProjectItem(id){
             axios.delete("http://localhost:5000/delete_projectItem/" + id).then(response => 
             {
-                this.$parent.getProjectItems();
+                this.$parent.getProjectItems(this.projectItem.projectId);
             });
         }
     },
@@ -33,21 +33,20 @@ Vue.component('project-item-component', {
     </div>`
 })
 
-
-const app = new Vue({
-    el: "#app",
-    data: {
-        projectItems: [
-        ],
-        projects: [
-        ]
+Vue.component('project-component', {
+    props: ['project'],
+    filters: {},
+    data() {
+        return {
+            projectItems: [] 
+        }
     },
     methods: {
         addProjectItem(event) {
             const title = event.target.value
             axios.post("http://localhost:5000/post_projectItem", {
                 title: title,
-                projectId: "3",
+                projectId: this.project.id,
                 description: "",
                 time: 0,
                 cost: 0.00,
@@ -57,28 +56,40 @@ const app = new Vue({
                 event.target.value = ''
             });
         },
-        getProjectItems(){
-            axios.get("http://localhost:5000/projectItem").then(response => {
+        getProjectItems(projectId){
+            axios.get("http://localhost:5000/projectItem/" + projectId).then(response => {
                 this.projectItems = response.data;
             });
         }
     },
     mounted() {
+        this.getProjectItems(this.project.id);
+    },
+    template: `<div id="projectCard">
+        <div>
+            <h1>{{ project.title }}</h1>
+            <ul> 
+                <project-item-component v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
+            </ul>
+        </div>
+        <input type="text" class="nes-input" placeholder="Add project item..." v-on:keyup.enter="addProjectItem" />
+    </div>`
+})
+
+
+const app = new Vue({
+    el: "#app",
+    data: {
+        projects: []
+    },
+    methods: {},
+    mounted() {
         axios.get("http://localhost:5000/project").then(response => {
           this.projects = response.data;
         });
-        this.getProjectItems();
     },
-    template: `
-        <div id="projectCard">
-            <div>
-                <h1>Some other stuff</h1>
-                <ul> 
-                    <project-item-component v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
-                </ul>
-            </div>
-            <input type="text" class="nes-input" placeholder="Add project item..." v-on:keyup.enter="addProjectItem">
-        </div>
-    `
+    template: `<div>
+        <project-component v-for="project in projects" v-bind:project="project" v-bind:key="project.id"/>
+    </div>`
 })
 

@@ -150,6 +150,12 @@ def projectItems():
     result = projectItems_schema.dump(projectItems)
     return jsonify(result.data)
 
+@app.route('/projectItem/<projectId>')
+def getProjectItemsForProject(projectId):
+    projectItems = ProjectItem.query.filter_by(projectId=projectId)
+    result = projectItems_schema.dump(projectItems)
+    return jsonify(result.data)
+
 @app.route('/post_projectItem', methods=['POST'])
 def post_projectItem():
     req_data = request.get_json()
