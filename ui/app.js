@@ -1,3 +1,4 @@
+
 Vue.component('project-item-component', {
     props: ['projectItem'],
     filters: {},
