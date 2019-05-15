@@ -4,6 +4,9 @@
       <mdc-layout-cell v-for="project in projects" v-bind:key="project.id">
         <Project v-bind:project="project" />
       </mdc-layout-cell>
+      <mdc-layout-cell>
+        <input type="text" placeholder="Add new project..." v-on:keyup.enter="addProject" />
+      </mdc-layout-cell>
     </mdc-layout-grid>
     
   </div>
@@ -19,13 +22,29 @@
           {
             id: 1,
             title: 'some such title',
-            description: 'whatever'
+            description: 'whatever',
+            totalCost: 0,
+            totalTime: 0
           }
         ]
       }
     },
     components: { Project },
-    methods: {},
+    methods: {
+      addProject(event) {
+            const title = event.target.value
+            this.$axios.post("http://localhost:5000/post_project", {
+                title: title,
+                userId: 1,
+                description: "",
+                totalCost: 0,
+                totalTime: 0
+            }).then(response => {
+                this.projects.push(response.data);
+                event.target.value = ''
+            });
+        }
+    },
     mounted() {
       this.$axios.get("http://localhost:5000/project").then(response => {
         this.projects = response.data;

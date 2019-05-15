@@ -119,10 +119,14 @@ def projects():
 
 @app.route('/post_project', methods=['POST'])
 def post_project():
-    project = Project(request.form['title'], request.form['userId'], request.form['description'])
+    req_data = request.get_json()
+    print(req_data)
+    project = Project(req_data['title'], req_data['userId'], req_data['description'], req_data['totalCost'], req_data['totalTime'])
+    
     db.session.add(project)
     db.session.commit()
     result = project_schema.dump(project)
+    print(result)
     return jsonify(result.data)
 
 @app.route('/project/<projectId>')
