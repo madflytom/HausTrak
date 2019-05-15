@@ -145,7 +145,7 @@ def project(projectId):
 
     result = project_schema.dump(project)
     return jsonify(result.data)
-
+    
 """ Project Item Stuff """
 
 @app.route('/projectItem')
