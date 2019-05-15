@@ -1,6 +1,7 @@
 <template>
     <mdc-card>
         <mdc-card-primary-action>
+            
         </mdc-card-primary-action>
         <mdc-card-header
             v-bind:title="project.title"
@@ -10,7 +11,21 @@
             <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
         </mdc-card-text>
         <mdc-card-actions>
-            <input type="text" placeholder="Add project item..." v-on:keyup.enter="addProjectItem" />
+            <form @submit.prevent="handleSubmit">
+                <label>
+                    Title:
+                    <input type="text" v-model="newProjectItem.title" required />
+                </label>
+                <label>
+                    Time(minutes):
+                    <input type="number" v-model="newProjectItem.time" required />
+                </label>
+                <label>
+                    Cost($):
+                    <input type="number" min="0.00" step="0.01" v-model="newProjectItem.cost" placeholder="0.00" required />
+                </label>
+                <button type="submit">Add Project Item</button>
+            </form>
         </mdc-card-actions>
     </mdc-card>
 </template>
@@ -26,30 +41,40 @@ export default {
   },
   data() {
     return {
-        projectItems: [] 
+        projectItems: [],
+        newProjectItem: 
+        {
+            title: '',
+            time: '',
+            cost: ''
+        }
     }
   },
   components:{
       ProjectItem
   },
   methods: {
-      addProjectItem(event) {
-            const title = event.target.value
-            this.$axios.post("http://localhost:5000/post_projectItem", {
-                title: title,
-                projectId: this.project.id,
-                description: "",
-                time: 0,
-                cost: 0.00,
-                done: false
-            }).then(response => {
-                this.projectItems.push(response.data);
-                event.target.value = ''
-            });
-        },
         getProjectItems(projectId){
             this.$axios.get("http://localhost:5000/projectItem/" + projectId).then(response => {
                 this.projectItems = response.data;
+            });
+        },
+        handleSubmit() {
+            this.$axios.post("http://localhost:5000/post_projectItem", {
+                title: this.newProjectItem.title,
+                projectId: this.project.id,
+                description: "",
+                time: this.newProjectItem.time,
+                cost: this.newProjectItem.cost,
+                done: false
+            }).then(response => {
+                this.projectItems.push(response.data);
+                this.newProjectItem = 
+                {
+                    title: '',
+                    time: '',
+                    cost: ''
+                }
             });
         }
   },
