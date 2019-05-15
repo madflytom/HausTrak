@@ -1,14 +1,37 @@
 <template>
   <div class="app">
-    <mdc-layout-grid>
-      <mdc-layout-cell v-for="project in projects" v-bind:key="project.id">
-        <Project v-bind:project="project" @changed="getProjectData" />
-      </mdc-layout-cell>
-      <mdc-layout-cell>
-        <input type="text" placeholder="Add new project..." v-on:keyup.enter="addProject" />
-      </mdc-layout-cell>
-    </mdc-layout-grid>
-    
+    <mdc-layout-app>
+      <mdc-toolbar slot="toolbar">
+        <mdc-toolbar-row>
+          <mdc-toolbar-section align-start >
+            <!--<mdc-toolbar-menu-icon event="toggle-drawer"></mdc-toolbar-menu-icon>-->
+            <mdc-toolbar-title>HausTrak</mdc-toolbar-title>
+          </mdc-toolbar-section>
+          <mdc-toolbar-section align-end>
+            <mdc-toolbar-icon event="show-help" icon="help"></mdc-toolbar-icon>
+          </mdc-toolbar-section>
+        </mdc-toolbar-row>
+      </mdc-toolbar>
+      
+      <mdc-drawer slot="drawer" toggle-on="toggle-drawer">
+        <!--<mdc-drawer-list>
+            <mdc-drawer-item start-icon="inbox">Inbox</mdc-drawer-item>
+            <mdc-drawer-item start-icon="send">Sent Mail</mdc-drawer-item>
+            <mdc-drawer-item start-icon="drafts">Drafts</mdc-drawer-item>
+        </mdc-drawer-list>-->
+      </mdc-drawer>
+      
+      <main>
+        <mdc-layout-grid>
+          <mdc-layout-cell v-for="project in projects" v-bind:key="project.id">
+            <Project v-bind:project="project" @changed="getProjectData" />
+          </mdc-layout-cell>
+          <mdc-layout-cell>
+            <input type="text" placeholder="Add new project..." v-on:keyup.enter="addProject" />
+          </mdc-layout-cell>
+        </mdc-layout-grid>   
+      </main>
+    </mdc-layout-app>  
   </div>
 </template>
 
