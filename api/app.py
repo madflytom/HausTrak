@@ -114,7 +114,21 @@ def profile(username):
 @app.route('/project')
 def projects():
     projects = Project.query.all()
-    result = projects_schema.dump(projects)
+    fullProjects = []
+
+    for project in projects:
+        cost = db.session.query(func.sum(ProjectItem.cost).label('totalCost')).filter(ProjectItem.projectId==project.id)
+        totalCost = cost.scalar()
+        print(totalCost)
+        project.totalCost = totalCost
+
+        time = db.session.query(func.sum(ProjectItem.time).label('totalTime')).filter(ProjectItem.projectId == project.id)
+        totalTime = time.scalar()
+        print(totalTime)
+        project.totalTime = totalTime
+        fullProjects.append(project)
+
+    result = projects_schema.dump(fullProjects)
     return jsonify(result.data)
 
 @app.route('/post_project', methods=['POST'])
@@ -145,7 +159,7 @@ def project(projectId):
 
     result = project_schema.dump(project)
     return jsonify(result.data)
-    
+
 """ Project Item Stuff """
 
 @app.route('/projectItem')

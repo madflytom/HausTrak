@@ -5,7 +5,7 @@
         </mdc-card-primary-action>
         <mdc-card-header
             v-bind:title="project.title"
-            subtitle="subtitle here" >
+            v-bind:subtitle="'Total Cost: $' + project.totalCost.toString() + ' | Total Time: ' + project.totalTime.toString() + ' minutes'">
         </mdc-card-header>
         <mdc-card-text>
             <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
@@ -58,6 +58,7 @@ export default {
             this.$axios.get("http://localhost:5000/projectItem/" + projectId).then(response => {
                 this.projectItems = response.data;
             });
+            this.$emit('changed')
         },
         handleSubmit() {
             this.$axios.post("http://localhost:5000/post_projectItem", {
@@ -74,7 +75,8 @@ export default {
                     title: '',
                     time: '',
                     cost: ''
-                }
+                };
+                this.$emit('changed')
             });
         }
   },

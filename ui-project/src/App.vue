@@ -2,7 +2,7 @@
   <div class="app">
     <mdc-layout-grid>
       <mdc-layout-cell v-for="project in projects" v-bind:key="project.id">
-        <Project v-bind:project="project" />
+        <Project v-bind:project="project" @changed="getProjectData" />
       </mdc-layout-cell>
       <mdc-layout-cell>
         <input type="text" placeholder="Add new project..." v-on:keyup.enter="addProject" />
@@ -43,12 +43,15 @@
                 this.projects.push(response.data);
                 event.target.value = ''
             });
+        },
+        getProjectData(){
+          this.$axios.get("http://localhost:5000/project").then(response => {
+            this.projects = response.data;
+          });
         }
     },
     mounted() {
-      this.$axios.get("http://localhost:5000/project").then(response => {
-        this.projects = response.data;
-      });
+      this.getProjectData();
     }
   }
 </script>
