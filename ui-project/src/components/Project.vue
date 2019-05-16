@@ -1,7 +1,6 @@
 <template>
     <mdc-card>
         <mdc-card-primary-action>
-            
         </mdc-card-primary-action>
         <mdc-card-header
             v-bind:title="project.title"
@@ -26,6 +25,7 @@
                 </label>
                 <button type="submit">Add Project Item</button>
             </form>
+            <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="delete_forever" v-on:click="deleteProject(project.id)">delete_forever</button>
         </mdc-card-actions>
     </mdc-card>
 </template>
@@ -76,6 +76,11 @@ export default {
                     time: '',
                     cost: ''
                 };
+                this.$emit('changed')
+            });
+        },
+        deleteProject(projectId){
+            this.$axios.delete("http://localhost:5000/delete_project/" + projectId).then(() => {
                 this.$emit('changed')
             });
         }
