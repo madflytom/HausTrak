@@ -160,6 +160,18 @@ def project(projectId):
     result = project_schema.dump(project)
     return jsonify(result.data)
 
+@app.route('/delete_project/<projectId>', methods=['DELETE'])
+def delete_project(projectId):
+    projectItems = ProjectItem.query.filter_by(projectId=projectId)
+    for projectItem in projectItems:
+        db.session.delete(projectItem)
+        db.session.commit()
+
+    project = Project.query.filter_by(id=projectId).first()
+    db.session.delete(project)
+    db.session.commit()
+    return '', 204
+
 """ Project Item Stuff """
 
 @app.route('/projectItem')
