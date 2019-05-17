@@ -79,7 +79,6 @@ export default {
                 this.$emit('changed')
             });
         },
-        //Testing pull request and automated kanban
         deleteProject(projectId){
             this.$axios.delete("http://localhost:5000/delete_project/" + projectId).then(() => {
                 this.$emit('changed')
