@@ -8,24 +8,27 @@
         </mdc-card-header>
         <mdc-card-text>
             <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
+            <form @submit.prevent="handleSubmit">
+                <label for="projectTitle">
+                    Title:
+                    <input id="projectTitle" type="text" v-model="newProjectItem.title" required />
+                </label><br />
+                <label for="projectTime">
+                    Time(minutes):
+                    <input id="projectTime" type="number" v-model="newProjectItem.time" required />
+                </label> <br />
+                <label for="projectCost">
+                    Cost($):
+                    <input id="projectCost" type="number" min="0.00" step="0.01" v-model="newProjectItem.cost" placeholder="0.00" required />
+                </label><br />
+                <mdc-button id="submitButton" raised dense type="submit">Add Project Item</mdc-button>
+            </form>
+            <hr>
         </mdc-card-text>
         <mdc-card-actions>
-            <form @submit.prevent="handleSubmit">
-                <label>
-                    Title:
-                    <input type="text" v-model="newProjectItem.title" required />
-                </label>
-                <label>
-                    Time(minutes):
-                    <input type="number" v-model="newProjectItem.time" required />
-                </label>
-                <label>
-                    Cost($):
-                    <input type="number" min="0.00" step="0.01" v-model="newProjectItem.cost" placeholder="0.00" required />
-                </label>
-                <button type="submit">Add Project Item</button>
-            </form>
-            <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="delete_forever" v-on:click="deleteProject(project.id)">delete_forever</button>
+            <mdc-card-action-buttons>
+                <mdc-card-action-button v-on:click="deleteProject(project.id)" >DELETE PROJECT</mdc-card-action-button>
+            </mdc-card-action-buttons>
         </mdc-card-actions>
     </mdc-card>
 </template>
@@ -94,9 +97,26 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     #projectCard {
-    background: #fff;
-    border-radius: 4px;
-    padding: 20px;
-    transition: all 0.2s;
+        background: #fff;
+        border-radius: 4px;
+        padding: 20px;
+        transition: all 0.2s;
+    }
+    #submitButton{
+        width: 100%
+    }
+    input, select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    form {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
     }
 </style>
