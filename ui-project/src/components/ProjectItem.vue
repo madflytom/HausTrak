@@ -6,10 +6,10 @@
                     <input type="checkbox" class="nes-checkbox" v-model="projectItem.done" v-on:click="checkProjectItem(projectItem)">
                     <span>&nbsp;</span>
                 </label> 
-                <del v-if="projectItem.done">{{ projectItem.title }}</del>
-                <span v-else>{{ projectItem.title }}</span>
+                <del v-if="projectItem.done"><b>{{ projectItem.title }}</b> <br /> <i>${{projectItem.cost}} - {{ projectItem.time }} min</i></del>
+                <span v-else><b>{{ projectItem.title }}</b> <br /> <i>${{projectItem.cost}} - {{ projectItem.time }} min</i></span>
                 <div class="space"></div>
-                <button class="nes-btn is-error padding" v-on:click="deleteProjectItem(projectItem.id)">X</button>
+                <mdc-button v-on:click="deleteProjectItem(projectItem.id)"><i class="material-icons mdc-button__icon">clear</i></mdc-button>
             </li>
         </ul>
     </div>
@@ -45,22 +45,29 @@ export default {
 <style scoped>
 
     li {
-    margin: 8px 0;
+        margin: 8px 0;
     }
 
     del {
-    color: rgba(0, 0, 0, 0.3);
+        color: rgba(0, 0, 0, 0.3);
     }
 
     .padding {
-    padding: 1px 7px 2px;
+        padding: 1px 7px 2px;
     }
 
     .flex {
-    display: flex;
+        display: flex;
     }
 
     .space {
-    flex-grow: 1;
+        flex-grow: 1;
+    }
+
+    mdc-button {
+        cursor: pointer;
+    }
+    input[type="checkbox"]{
+        cursor: pointer;
     }
 </style>
