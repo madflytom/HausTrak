@@ -32,13 +32,15 @@ class Project(db.Model):
     description = db.Column(db.String(None))
     totalCost = db.Column(db.Float)
     totalTime = db.Column(db.Integer)
+    auth0subject = db.Column(db.String(250))
 
-    def __init__(self, title, userId, description, totalCost, totalTime):
+    def __init__(self, title, userId, description, totalCost, totalTime, auth0subject):
         self.title = title
         self.userId = userId
         self.description = description
         self.totalCost = totalCost
         self.totalTime = totalTime
+        self.auth0subject = auth0subject
 
     def __repr__(self):
         return '<Project %r>' % self.title
@@ -81,7 +83,7 @@ projectItems_schema = ProjectItemSchema(many=True)
 
 class ProjectSchema(ma.Schema):
     class Meta:
-        fields = ('id','title','userId', 'description', 'totalCost', 'totalTime')
+        fields = ('id','title','userId', 'description', 'totalCost', 'totalTime', 'auth0subject')
 
 project_schema = ProjectSchema()
 projects_schema = ProjectSchema(many=True)

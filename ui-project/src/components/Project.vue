@@ -4,7 +4,7 @@
         </mdc-card-primary-action>
         <mdc-card-header
             v-bind:title="project.title"
-            v-bind:subtitle="'Total Cost: $' + project.totalCost.toString() + ' | Total Time: ' + project.totalTime.toString() + ' minutes'">
+            v-bind:subtitle="'Total Cost: $' + project.totalCost + ' | Total Time: ' + project.totalTime + ' minutes'">
         </mdc-card-header>
         <mdc-card-text>
             <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />

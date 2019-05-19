@@ -12,9 +12,9 @@ from flask import jsonify
 from sqlalchemy.sql import func
 from flask import render_template, url_for, request, redirect
 
-@routes.route('/project')
-def projects():
-    projects = Project.query.all()
+@routes.route('/project/<user>')
+def projects(user):
+    projects = Project.query.filter_by(auth0subject=user)
     fullProjects = []
 
     for project in projects:
@@ -36,7 +36,7 @@ def projects():
 def post_project():
     req_data = request.get_json()
     print(req_data)
-    project = Project(req_data['title'], req_data['userId'], req_data['description'], req_data['totalCost'], req_data['totalTime'])
+    project = Project(req_data['title'], req_data['userId'], req_data['description'], req_data['totalCost'], req_data['totalTime'], req_data['auth0subject'])
     
     db.session.add(project)
     db.session.commit()

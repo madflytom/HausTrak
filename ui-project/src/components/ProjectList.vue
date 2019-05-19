@@ -35,7 +35,7 @@
 
 <script>
   import Project from './Project.vue'
-  import { isLoggedIn } from '../utils/auth';
+  import { isLoggedIn, getSubjectId, getIdToken } from '../utils/auth';
 
   export default {
     data () {
@@ -63,16 +63,18 @@
                 userId: 1,
                 description: "",
                 totalCost: 0,
-                totalTime: 0
+                totalTime: 0,
+                auth0subject: getSubjectId(getIdToken())
             }).then(response => {
                 this.projects.push(response.data);
                 event.target.value = ''
             });
         },
         getProjectData(){
-          this.$axios.get("http://localhost:5000/project").then(response => {
-            this.projects = response.data;
-          });
+            const user = getSubjectId(getIdToken());
+            this.$axios.get("http://localhost:5000/project/" + user).then(response => {
+                this.projects = response.data;
+            });
         }
     },
     mounted() {
