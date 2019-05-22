@@ -1,5 +1,5 @@
 <template>
-    <md-card md-with-hover>
+    <md-card md-with-hover class="cardWide">
       <md-ripple>
         <md-card-header>
           <div class="md-title">{{ project.title }}</div>
@@ -97,12 +97,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    #projectCard {
-        background: #fff;
-        border-radius: 4px;
-        padding: 20px;
-        transition: all 0.2s;
-    }
+    
     #submitButton{
         width: 100%
     }
@@ -119,5 +114,9 @@ export default {
         border-radius: 5px;
         background-color: #f2f2f2;
         padding: 20px;
+    }
+
+    .cardWide{
+        min-width: 350px;
     }
 </style>
