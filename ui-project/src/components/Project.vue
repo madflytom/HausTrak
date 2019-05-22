@@ -1,13 +1,13 @@
 <template>
-    <mdc-card>
-        <mdc-card-primary-action>
-        </mdc-card-primary-action>
-        <mdc-card-header
-            v-bind:title="project.title"
-            v-bind:subtitle="'Total Cost: $' + project.totalCost + ' | Total Time: ' + project.totalTime + ' minutes'">
-        </mdc-card-header>
-        <mdc-card-text>
-            <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
+    <md-card md-with-hover>
+      <md-ripple>
+        <md-card-header>
+          <div class="md-title">{{ project.title }}</div>
+          <div class="md-subhead">Total Cost: {{ project.totalCost }} | Total Time: {{ project.totalTime }} minutes </div>
+        </md-card-header>
+
+        <md-card-content>
+          <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
             <form @submit.prevent="handleSubmit">
                 <label for="projectTitle">
                     Title:
@@ -24,13 +24,14 @@
                 <mdc-button id="submitButton" raised dense type="submit">Add Project Item</mdc-button>
             </form>
             <hr>
-        </mdc-card-text>
-        <mdc-card-actions>
-            <mdc-card-action-buttons>
-                <mdc-card-action-button v-on:click="deleteProject(project.id)" >DELETE PROJECT</mdc-card-action-button>
-            </mdc-card-action-buttons>
-        </mdc-card-actions>
-    </mdc-card>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button v-on:click="deleteProject(project.id)" >DELETE PROJECT</md-button>
+        </md-card-actions>
+      </md-ripple>
+    </md-card>
+
 </template>
 
 <script>

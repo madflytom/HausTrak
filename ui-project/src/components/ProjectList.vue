@@ -1,12 +1,10 @@
 <template>
-    <mdc-layout-grid>
-        <mdc-layout-cell v-for="project in projects" v-bind:key="project.id">
-        <Project v-bind:project="project" @changed="getProjectData" />
-        </mdc-layout-cell>
-        <mdc-layout-cell>
-        <input type="text" placeholder="Add new project..." v-on:keyup.enter="addProject" />
-        </mdc-layout-cell>
-    </mdc-layout-grid>   
+    <div class="md-layout md-gutter md-layout-nowrap md-alignment-top-center pad">
+        <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100" v-for="project in projects" v-bind:key="project.id">
+            <Project v-bind:project="project" @changed="getProjectData" />
+        </div>
+        <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-size-100"><input type="text" placeholder="Add new project..." v-on:keyup.enter="addProject" /></div>
+    </div>
 </template>
 
 <script>
@@ -78,4 +76,9 @@
     min-height: 100%;
     margin: 0;
   }
+
+  .pad{
+      padding:25px;
+  }
+
 </style>
