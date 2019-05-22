@@ -1,17 +1,31 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <ul class="nav navbar-nav navbar-right">
-      <li>
-        <button class="btn btn-danger log" v-show="isLoggedIn()" @click="handleLogout()">Log out </button>
-        <button class="btn btn-info log" v-show="!isLoggedIn()" @click="handleLogin()">Log In</button>
-      </li>
-    </ul>
-    <router-view/>
-  </div>
+  <mdc-layout-app>
+
+
+    <md-toolbar class="md-primary" md-elevation="1">
+      <h3 class="md-title" style="flex: 1">HausTrak</h3>
+      <md-button v-show="isLoggedIn()" @click="handleLogout()">Log out</md-button>
+      <md-button v-show="!isLoggedIn()" @click="handleLogin()">Log in</md-button>
+    </md-toolbar>
+    
+    <mdc-drawer slot="drawer" toggle-on="toggle-drawer">
+      <!--<mdc-drawer-list>
+          <mdc-drawer-item start-icon="inbox">Inbox</mdc-drawer-item>
+          <mdc-drawer-item start-icon="send">Sent Mail</mdc-drawer-item>
+          <mdc-drawer-item start-icon="drafts">Drafts</mdc-drawer-item>
+      </mdc-drawer-list>-->
+    </mdc-drawer>
+    
+    <main>
+      <div class="welcomeDiv" v-show="!isLoggedIn()">
+        <h1>Welcome to HausTrak!</h1>
+        <p>Please log in to view your projects!</p>
+      </div>
+      <div id="app">
+        <router-view/>
+      </div>
+    </main>
+  </mdc-layout-app>  
 </template>
 
 <script>
@@ -35,6 +49,14 @@
 <style lang="scss">
   // First, set the value for variable
   $mdc-typography-font-family: "Roboto Mono", monospace;
+
+  .accessButtons{
+    margin-right: 20px;
+  }
+
+  .welcomeDiv{
+    margin: 20px;
+  }
 
   // Then, import required files
   @import "@material/typography/mixins";
