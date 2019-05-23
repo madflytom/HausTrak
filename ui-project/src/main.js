@@ -1,13 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
-import VueMDCAdapter from 'vue-mdc-adapter'
 import router from './router'
-import { MdButton, MdContent, MdTabs, MdToolbar, MdCard, MdList, MdDrawer } from 'vue-material/dist/components'
+import { MdButton, MdContent, MdTabs, MdToolbar, MdCard, MdList, MdDrawer, MdApp, MdRipple, MdIcon} from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-
-Vue.use(VueMDCAdapter)
 
 Vue.use(MdButton)
 Vue.use(MdContent)
@@ -16,6 +13,9 @@ Vue.use(MdToolbar)
 Vue.use(MdCard)
 Vue.use(MdList)
 Vue.use(MdDrawer)
+Vue.use(MdApp)
+Vue.use(MdRipple)
+Vue.use(MdIcon)
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios

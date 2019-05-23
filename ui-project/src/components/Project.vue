@@ -1,6 +1,5 @@
 <template>
     <md-card md-with-hover class="cardWide">
-      <md-ripple>
         <md-card-header>
           <div class="md-title">{{ project.title }}</div>
           <div class="md-subhead">Total Cost: {{ project.totalCost }} | Total Time: {{ project.totalTime }} minutes </div>
@@ -9,19 +8,23 @@
         <md-card-content>
           <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
             <form @submit.prevent="handleSubmit">
-                <label for="projectTitle">
-                    Title:
-                    <input id="projectTitle" type="text" v-model="newProjectItem.title" required />
-                </label><br />
-                <label for="projectTime">
-                    Time(minutes):
-                    <input id="projectTime" type="number" v-model="newProjectItem.time" required />
-                </label> <br />
-                <label for="projectCost">
-                    Cost($):
-                    <input id="projectCost" type="number" min="0.00" step="0.01" v-model="newProjectItem.cost" placeholder="0.00" required />
-                </label><br />
-                <mdc-button id="submitButton" raised dense type="submit">Add Project Item</mdc-button>
+                <div>
+                    <label for="projectTitle">
+                        Title:
+                        <input id="projectTitle" type="text" v-model="newProjectItem.title" required />
+                    </label><br />
+                    <label for="projectTime">
+                        Time(minutes):
+                        <input id="projectTime" type="number" v-model="newProjectItem.time" required />
+                    </label> <br />
+                    <label for="projectCost">
+                        Cost($):
+                        <input id="projectCost" type="number" min="0.00" step="0.01" v-model="newProjectItem.cost" placeholder="0.00" required />
+                    </label>
+                </div>
+                <div>
+                    <md-button id="submitButton" class="md-raised md-primary" type="submit">Add Project Item</md-button>
+                </div>
             </form>
             <hr>
         </md-card-content>
@@ -29,7 +32,6 @@
         <md-card-actions>
           <md-button v-on:click="deleteProject(project.id)" >DELETE PROJECT</md-button>
         </md-card-actions>
-      </md-ripple>
     </md-card>
 
 </template>
@@ -98,8 +100,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     
-    #submitButton{
-        width: 100%
+    .md-button{
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        margin-bottom: 8px;
     }
     input, select {
         width: 100%;
@@ -118,5 +124,6 @@ export default {
 
     .cardWide{
         min-width: 350px;
+        margin-bottom: 25px;
     }
 </style>

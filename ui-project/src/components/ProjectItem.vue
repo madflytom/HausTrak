@@ -9,7 +9,9 @@
                 <del v-if="projectItem.done"><b>{{ projectItem.title }}</b> <br /> <i>${{projectItem.cost}} - {{ projectItem.time }} min</i></del>
                 <span v-else><b>{{ projectItem.title }}</b> <br /> <i>${{projectItem.cost}} - {{ projectItem.time }} min</i></span>
                 <div class="space"></div>
-                <mdc-button v-on:click="deleteProjectItem(projectItem.id)"><i class="material-icons mdc-button__icon">clear</i></mdc-button>
+                <md-button v-on:click="deleteProjectItem(projectItem.id)" class="md-icon-button">
+                    <md-icon>clear</md-icon>
+                </md-button>
             </li>
         </ul>
     </div>
