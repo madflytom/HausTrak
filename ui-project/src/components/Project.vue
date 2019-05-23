@@ -1,36 +1,39 @@
 <template>
-    <mdc-card>
-        <mdc-card-primary-action>
-        </mdc-card-primary-action>
-        <mdc-card-header
-            v-bind:title="project.title"
-            v-bind:subtitle="'Total Cost: $' + project.totalCost.toString() + ' | Total Time: ' + project.totalTime.toString() + ' minutes'">
-        </mdc-card-header>
-        <mdc-card-text>
-            <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
+    <md-card md-with-hover class="cardWide">
+        <md-card-header>
+          <div class="md-title">{{ project.title }}</div>
+          <div class="md-subhead">Total Cost: {{ project.totalCost }} | Total Time: {{ project.totalTime }} minutes </div>
+        </md-card-header>
+
+        <md-card-content>
+          <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
             <form @submit.prevent="handleSubmit">
-                <label for="projectTitle">
-                    Title:
-                    <input id="projectTitle" type="text" v-model="newProjectItem.title" required />
-                </label><br />
-                <label for="projectTime">
-                    Time(minutes):
-                    <input id="projectTime" type="number" v-model="newProjectItem.time" required />
-                </label> <br />
-                <label for="projectCost">
-                    Cost($):
-                    <input id="projectCost" type="number" min="0.00" step="0.01" v-model="newProjectItem.cost" placeholder="0.00" required />
-                </label><br />
-                <mdc-button id="submitButton" raised dense type="submit">Add Project Item</mdc-button>
+                <div>
+                    <label for="projectTitle">
+                        Title:
+                        <input id="projectTitle" type="text" v-model="newProjectItem.title" required />
+                    </label><br />
+                    <label for="projectTime">
+                        Time(minutes):
+                        <input id="projectTime" type="number" v-model="newProjectItem.time" required />
+                    </label> <br />
+                    <label for="projectCost">
+                        Cost($):
+                        <input id="projectCost" type="number" min="0.00" step="0.01" v-model="newProjectItem.cost" placeholder="0.00" required />
+                    </label>
+                </div>
+                <div>
+                    <md-button id="submitButton" class="md-raised md-primary" type="submit">Add Project Item</md-button>
+                </div>
             </form>
             <hr>
-        </mdc-card-text>
-        <mdc-card-actions>
-            <mdc-card-action-buttons>
-                <mdc-card-action-button v-on:click="deleteProject(project.id)" >DELETE PROJECT</mdc-card-action-button>
-            </mdc-card-action-buttons>
-        </mdc-card-actions>
-    </mdc-card>
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button v-on:click="deleteProject(project.id)" >DELETE PROJECT</md-button>
+        </md-card-actions>
+    </md-card>
+
 </template>
 
 <script>
@@ -96,14 +99,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    #projectCard {
-        background: #fff;
-        border-radius: 4px;
-        padding: 20px;
-        transition: all 0.2s;
-    }
-    #submitButton{
-        width: 100%
+    
+    .md-button{
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        margin-bottom: 8px;
     }
     input, select {
         width: 100%;
@@ -118,5 +120,10 @@ export default {
         border-radius: 5px;
         background-color: #f2f2f2;
         padding: 20px;
+    }
+
+    .cardWide{
+        min-width: 350px;
+        margin-bottom: 25px;
     }
 </style>
