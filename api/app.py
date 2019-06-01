@@ -6,10 +6,12 @@ from flask import render_template, url_for, request, redirect
 from flask_marshmallow import Marshmallow
 from flask import jsonify
 from sqlalchemy.sql import func
+from flask.ext.heroku import Heroku
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/haustrak'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/haustrak'
+heroku = Heroku(app)
 db = SQLAlchemy(app)
 
 
