@@ -61,13 +61,13 @@ export default {
   },
   methods: {
         getProjectItems(projectId){
-            this.$axios.get("http://localhost:5000/projectItem/" + projectId).then(response => {
+            this.$axios.get("https://haustrak.herokuapp.com/projectItem/" + projectId).then(response => {
                 this.projectItems = response.data;
             });
             this.$emit('changed')
         },
         handleSubmit() {
-            this.$axios.post("http://localhost:5000/post_projectItem", {
+            this.$axios.post("https://haustrak.herokuapp.com/post_projectItem", {
                 title: this.newProjectItem.title,
                 projectId: this.project.id,
                 description: "",
@@ -86,7 +86,7 @@ export default {
             });
         },
         deleteProject(projectId){
-            this.$axios.delete("http://localhost:5000/delete_project/" + projectId).then(() => {
+            this.$axios.delete("https://haustrak.herokuapp.com/delete_project/" + projectId).then(() => {
                 this.$emit('changed')
             });
         }

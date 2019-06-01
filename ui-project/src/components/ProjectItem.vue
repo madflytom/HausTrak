@@ -26,14 +26,14 @@ export default {
   methods: {
       checkProjectItem(projectItem){
             const done = !projectItem.done
-            this.$axios.post("http://localhost:5000/check_projectItem/" + projectItem.id, {
+            this.$axios.post("https://haustrak.herokuapp.com/check_projectItem/" + projectItem.id, {
                 done: done
             }).then(() => {
                 projectItem.done = done
             });
         },
         deleteProjectItem(id){
-            this.$axios.delete("http://localhost:5000/delete_projectItem/" + id).then(() => 
+            this.$axios.delete("https://haustrak.herokuapp.com/delete_projectItem/" + id).then(() => 
             {
                 //this.$parent.getProjectItems(this.projectItem.projectId);
                 this.$emit('deleted', this.projectItem.projectId)
