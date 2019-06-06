@@ -8,7 +8,7 @@ const ACCESS_TOKEN_KEY = 'access_token';
 
 const CLIENT_ID = 'MdCsbUaw9d0u9K8g5SXU03TaJxtdyLZh';
 const CLIENT_DOMAIN = 'madflytom.auth0.com';
-const REDIRECT = 'http://www.haustrak.com/callback';
+const REDIRECT = 'https://www.haustrak.com/callback';
 const SCOPE = 'full_access';
 const AUDIENCE = 'http://HausTrak.com';
 
