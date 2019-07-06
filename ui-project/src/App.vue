@@ -2,7 +2,7 @@
   <div class="page-container">
     <md-app>
       <md-app-toolbar class="md-primary" md-elevation="1">
-        <h3 class="md-title" style="flex: 1">HausTrak</h3>
+        <h3 class="md-title" style="flex: 1"><img src="./assets/HAUSTRAK_logo.png" class="headerLogo" /></h3>
         <md-button v-show="isLoggedIn()" @click="handleLogout()">Log out</md-button>
         <md-button v-show="!isLoggedIn()" @click="handleLogin()">Log in</md-button>
       </md-app-toolbar>
@@ -41,6 +41,19 @@
 
 <style lang="scss">
 
+@import "~vue-material/dist/theme/engine"; // Import the theme engine
+
+@include md-register-theme("default", (
+  primary: md-get-palette-color(bluegrey, A400), // The primary color of your application
+  accent: md-get-palette-color(amber, A400) // The accent or secondary color
+));
+
+@import "~vue-material/dist/theme/all"; // Apply the theme
+
+
+  .headerLogo{
+    width: 200px;
+  }
 
   .accessButtons{
     margin-right: 20px;

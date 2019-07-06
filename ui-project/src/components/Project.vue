@@ -23,7 +23,7 @@
                     </label>
                 </div>
                 <div>
-                    <md-button id="submitButton" class="md-raised md-primary" type="submit">Add Project Item</md-button>
+                    <md-button id="submitButton" class="md-raised md-accent" type="submit">Add Project Item</md-button>
                 </div>
             </form>
             <hr>
