@@ -32,8 +32,8 @@
         },
       addProject(event) {
             const title = event.target.value
-            //this.$axios.post("http://localhost:5000/post_project", {
-              this.$axios.post("https://haustrak.herokuapp.com/post_project", {
+            this.$axios.post("http://localhost:5000/post_project", {
+            //  this.$axios.post("https://haustrak.herokuapp.com/post_project", {
                 title: title,
                 userId: 1,
                 description: "",
@@ -47,8 +47,8 @@
         },
         getProjectData(){
             const user = getSubjectId(getIdToken());
-            //this.$axios.get("http://localhost:5000/project/" + user).then(response => {
-              this.$axios.get("https://haustrak.herokuapp.com/project/" + user).then(response => {
+            this.$axios.get("http://localhost:5000/project/" + user).then(response => {
+            //  this.$axios.get("https://haustrak.herokuapp.com/project/" + user).then(response => {
                 this.projects = response.data;
             });
         }

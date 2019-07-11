@@ -10,8 +10,8 @@ from flask_heroku import Heroku
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/haustrak'  -- uncomment this if running local, and comment out heroku line below
-heroku = Heroku(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/haustrak'  # uncomment this if running local, and comment out heroku line below
+#heroku = Heroku(app)
 db = SQLAlchemy(app)
 
 
