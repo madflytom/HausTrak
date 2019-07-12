@@ -6,7 +6,7 @@
         </md-card-header>
 
         <md-card-content>
-          <ProjectItem @deleted="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
+          <ProjectItem @deleted="getProjectItems" @updated="getProjectItems" v-for="projectItem in projectItems" v-bind:projectItem="projectItem" v-bind:key="projectItem.id" />
             <form @submit.prevent="handleSubmit">
                 <div>
                     <label for="projectTitle">

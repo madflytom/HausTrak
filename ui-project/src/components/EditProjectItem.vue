@@ -29,36 +29,19 @@ export default {
     projectItem: {}
   },
   methods: {
-      handleSubmit() {
-          console.log(this.projectItem.title);
-            /* TODO: This will need to be an update endpoint. 
-            
-            this.$axios.post("http://localhost:5000/post_projectItem", {
-            //this.$axios.post("https://haustrak.herokuapp.com/post_projectItem", {
+        handleSubmit() {
+            this.$axios.put("http://localhost:5000/update_projectItem/" + this.projectItem.id, {
+            //this.$axios.put("https://haustrak.herokuapp.com/post_projectItem", {
                 title: this.projectItem.title,
-                projectId: this.project.id,
+                projectId: this.projectItem.projectId,
                 description: "",
                 time: this.projectItem.time,
                 cost: this.projectItem.cost,
                 done: false
             }).then(response => {
-                this.projectItems.push(response.data);
-                this.newProjectItem = 
-                {
-                    title: '',
-                    time: '',
-                    cost: ''
-                };
-                this.$emit('changed')
-            });*/
-        },
-        deleteProjectItem(id){
-            this.$axios.delete("http://localhost:5000/delete_projectItem/" + id).then(() => 
-            //this.$axios.delete("https://haustrak.herokuapp.com/delete_projectItem/" + id).then(() => 
-            {
-                //this.$parent.getProjectItems(this.projectItem.projectId);
-                this.$emit('deleted', this.projectItem.projectId)
-            });
+                console.log(response);
+                this.$emit('updated');
+            })
         }
   }
 }

@@ -47,3 +47,17 @@ def delete_projectItem(projectItemId):
     db.session.delete(projectItem)
     db.session.commit()
     return '', 204
+
+@routes.route('/update_projectItem/<projectItemId>', methods=['PUT'])
+def update_projectItem(projectItemId):
+    req_data = request.get_json()
+    exsitingProjectItem = ProjectItem.query.filter_by(id=projectItemId).first()
+    updatedProjectItem = ProjectItem(req_data['title'], req_data['projectId'], req_data['description'], req_data['cost'], req_data['time'], req_data['done'])
+    exsitingProjectItem.title = updatedProjectItem.title
+    exsitingProjectItem.description = updatedProjectItem.description
+    exsitingProjectItem.cost = updatedProjectItem.cost
+    exsitingProjectItem.time = updatedProjectItem.time
+    
+    db.session.commit()
+    result = projectItem_schema.dump(exsitingProjectItem)
+    return jsonify(result.data)

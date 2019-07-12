@@ -1,22 +1,27 @@
 <template>
     <div>
-        <div>
-            <ul> 
-                <li class="flex"> 
+        <ul> 
+            <li class="flex"> 
+                <div v-if="!isEditing">
                     <label>
                         <input type="checkbox" class="nes-checkbox" v-model="projectItem.done" v-on:click="checkProjectItem(projectItem)">
                         <span>&nbsp;</span>
                     </label> 
+                
                     <del v-if="projectItem.done"><b>{{ projectItem.title }}</b> <br /> <i>${{projectItem.cost}} - {{ projectItem.time }} min</i></del>
                     <span v-else><b>{{ projectItem.title }}</b> <br /> <i>${{projectItem.cost}} - {{ projectItem.time }} min</i></span>
-                    <div class="space"></div>
-                    <md-button v-on:click="deleteProjectItem(projectItem.id)" class="md-icon-button">
-                        <md-icon>clear</md-icon>
-                    </md-button>
-                </li>
-            </ul>
-        </div>
-        <EditProjectItem v-bind:projectItem="projectItem"></EditProjectItem>
+                </div>
+                <EditProjectItem @updated="updated" v-if="isEditing" v-bind:projectItem="projectItem"></EditProjectItem>
+                <div class="space"></div>
+                <md-button v-on:click="toggleEdit" class="md-icon-button">
+                    <md-icon v-if="!isEditing" alt="edit project item">edit</md-icon>
+                    <md-icon v-if="isEditing" alt="undo/cancel">undo</md-icon>
+                </md-button>
+                <md-button v-on:click="deleteProjectItem(projectItem.id)" class="md-icon-button">
+                    <md-icon>clear</md-icon>
+                </md-button>
+            </li>
+        </ul>
     </div>
     
 </template>
@@ -32,6 +37,11 @@ export default {
   },
   components:{
       EditProjectItem
+  },
+  data: function() {
+      return {
+          isEditing : false
+      }
   },
   methods: {
       checkProjectItem(projectItem){
@@ -50,6 +60,19 @@ export default {
                 //this.$parent.getProjectItems(this.projectItem.projectId);
                 this.$emit('deleted', this.projectItem.projectId)
             });
+        },
+        toggleEdit(){
+            if(!this.isEditing){
+                this.isEditing = true;
+            } else {
+                this.isEditing = false;
+            }
+            
+        },
+        updated(){
+            console.log("update success");
+            this.isEditing = false;
+            this.$emit("updated");
         }
   }
 }
